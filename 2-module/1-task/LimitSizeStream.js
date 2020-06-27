@@ -11,11 +11,11 @@ class LimitSizeStream extends Transform {
   }
 
   _transform(chunk, encoding, callback) {
-    if (this._fullLength === this._limit) {
+    this._fullLength += chunk.toString().length;
+
+    if (this._fullLength > this._limit) {
       callback(new LimitExceededError());
     } else {
-      this._fullLength += chunk.toString().length;
-
       callback(null, chunk);
     }
   }
